@@ -51,20 +51,69 @@ export default function Chat() {
     }
   };
 
+  const questions = [
+    {
+      question: "Ich will einen Hundesteuerantrag ausfüllen",
+      answer: "Alles klar, wie ist denn deine Anrede? („Herr“, „Frau“ oder „Person“)"
+    },
+    {
+      question: "Herr",
+      answer: "Okay, sehr gut 😊 wie ist denn dein Vorname?"
+    },
+    {
+      question: "Max",
+      answer: "In Ordnung und dein Nachname?"
+    },
+    {
+      question: "Mustermann",
+      answer: "In Ordnung Herr Mustermann, in welcher Straße und Hausnummer?"
+    },
+    {
+      question: "Musterstraße 1",
+      answer: "Was ist Ihre Postleitzahl und in welcher Stadt wohnen Sie?"
+    },
+    {
+      question: "49088 Osnabrück",
+      answer: "Alles klar, was ist Ihre Telefonnummer?"
+    },
+    {
+      question: "+49 1230 154665",
+      answer: "In Ordnung, wie viel vollhährige Personen leben denn in Ihrem Haushalt?"
+    },
+    {
+      question: "2",
+      answer: "Perfekt. Danke dir."
+    },
+  ]
+
   const sendMessage = () => {
     if (userInput) {
       addMessage({ message: userInput, type: "user" });
       setUserInput(""); // clear the textarea
-
+    
       // Here's is where you would put your request to the
       // chat bot server, a reply from the server should be
       // added using the function: addMessage({ message: "ok", type: "bot" });
       // for now we will only simulate the reply
       setTimeout(() => {
-        addMessage({ message: "ok", type: "bot" });
+        const answer = questions.find(
+          (question) => question.question === userInput
+        );
+      
+        if (!answer) {
+          addMessage({
+            message:
+              "Ich habe deine Frage nicht verstanden. Könntest du bitte die Frage umformulieren?",
+            type: "bot",
+          });
+        } else {
+          addMessage({ message: answer?.answer!, type: "bot" });
+        }
       }, (Math.floor(Math.random() * (15 - 10 + 1)) + 10) * 100);
     }
   };
+
+  
 
   const handleEnter = (e: KeyboardEvent<HTMLTextAreaElement>) => {
     if (e.key === "Enter" && !e.shiftKey) {
